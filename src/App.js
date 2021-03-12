@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import styled from 'styled-components'
+// import {ContainerButtons} from './components/ContainerButtons'
 
 const Container = styled.div`
 height:100vh;
@@ -37,13 +38,12 @@ class App extends React.Component {
 
   onChangeInputNovoConteudo = event => {
     this.setState({ novoConteudo: event.target.value })
-    console.log("Events.code: ",event)
   }
 
   onKeyUpPostarMensagem = event => {
-    if (event.code === "Enter" && this.state.novoRemetente!=="" && this.state.novoConteudo!=="") {
-    console.log("Events: asdasdddd",event)
-    this.novaMensagemPostada()
+    if (event.code === "Enter" && this.state.novoRemetente !== "" && this.state.novoConteudo !== "") {
+
+      this.novaMensagemPostada()
     }
   }
   novaMensagemPostada = () => {
@@ -55,6 +55,11 @@ class App extends React.Component {
     this.setState({ posts: mensagensAtualizadas })
     this.setState({ novoRemetente: "", novoConteudo: "" })
   }
+  deletarMensagem = (event) => {
+    let excluir = event.target
+    excluir.remove()
+    console.log("Events: ", event.target)
+  }
 
 
 
@@ -62,39 +67,25 @@ class App extends React.Component {
 
     const mensagemsComponentes = this.state.posts.map((post) => {
       return (
-          <div>
-          <span><i>{post.remetente}</i>:   </span>
+        <div
+          id={post.remetente} onDoubleClick={this.deletarMensagem}>
+          <span><i>{post.remetente}</i> :   </span>
           <span>{post.novoConteudo}</span>
-          </div>
-        )
+        </div>
+      )
     })
 
     return (
       <div className="App">
-        {/* <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-        </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-        </a>
-        </header> */}
+        <Container>
+          {mensagemsComponentes}
+          <ContainerButtons>
+            <input placeholder="Remetente" value={this.state.novoRemetente} onChange={this.onChangeInputNovoRemente} onKeyDown={this.onKeyUpPostarMensagem} />
+            <input placeholder="Mensagem" value={this.state.novoConteudo} onChange={this.onChangeInputNovoConteudo} onKeyDown={this.onKeyUpPostarMensagem} />
+            <button onClick={this.novaMensagemPostada}>Adicionar comentário</button>
+          </ContainerButtons>
+        </Container>
 
-<Container>
-{mensagemsComponentes}
-<ContainerButtons>
-<input value={this.state.novoRemetente} onChange={this.onChangeInputNovoRemente} onKeyDown={this.onKeyUpPostarMensagem}/>
-<input value={this.state.novoConteudo} onChange={this.onChangeInputNovoConteudo} onKeyDown={this.onKeyUpPostarMensagem}/>
-<button onClick={this.novaMensagemPostada}>Adicionar comentário</button>
-</ContainerButtons>
-</Container>
-        
       </div>
     );
   }
