@@ -31,12 +31,21 @@ class App extends React.Component {
 
   onChangeInputNovoRemente = event => {
     this.setState({ novoRemetente: event.target.value })
+    console.log("chaakaalaka")
+
   }
 
   onChangeInputNovoConteudo = event => {
     this.setState({ novoConteudo: event.target.value })
+    console.log("Events.code: ",event)
   }
 
+  onKeyUpPostarMensagem = event => {
+    if (event.code === "Enter" && this.state.novoRemetente!=="" && this.state.novoConteudo!=="") {
+    console.log("Events: asdasdddd",event)
+    this.novaMensagemPostada()
+    }
+  }
   novaMensagemPostada = () => {
     const novaMensagem = {
       remetente: this.state.novoRemetente,
@@ -80,8 +89,8 @@ class App extends React.Component {
 <Container>
 {mensagemsComponentes}
 <ContainerButtons>
-<input value={this.state.novoRemetente} onChange={this.onChangeInputNovoRemente}/>
-<input value={this.state.novoConteudo} onChange={this.onChangeInputNovoConteudo}/>
+<input value={this.state.novoRemetente} onChange={this.onChangeInputNovoRemente} onKeyDown={this.onKeyUpPostarMensagem}/>
+<input value={this.state.novoConteudo} onChange={this.onChangeInputNovoConteudo} onKeyDown={this.onKeyUpPostarMensagem}/>
 <button onClick={this.novaMensagemPostada}>Adicionar comentário</button>
 </ContainerButtons>
 </Container>
